@@ -1,6 +1,6 @@
-local nvim_lsp = require('lspconfig')
+local nvim_lsp = vim.lsp
 local servers = {
-    'asm_lsp', 'clangd', 'ts_ls',
+    'clangd', 'ts_ls',
     'pyright', 'rust_analyzer',
 }
 
@@ -8,17 +8,15 @@ local servers = {
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap = true, silent = true }
 
+vim.diagnostic.config({
+    virtual_text = true
+})
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
+local on_attach = function(_, bufnr) -- (client, bufnr)
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   local bufopts = { noremap = true, silent = true, buffer = bufnr }
@@ -45,7 +43,7 @@ local lsp_flags = {
   debounce_text_changes = 150,
 }
 
-nvim_lsp['lua_ls'].setup {
+nvim_lsp.config('lua_ls', {
     on_attach = on_attach,
     flags = lsp_flags,
     settings = {
@@ -74,12 +72,14 @@ nvim_lsp['lua_ls'].setup {
             },
         },
     },
-}
+})
+nvim_lsp.enable('lua_ls')
 
 for _, lsp in ipairs(servers) do
-    nvim_lsp[lsp].setup {
+    nvim_lsp.config(lsp, {
         on_attach = on_attach,
         flags = lsp_flags,
-    }
+    })
+    nvim_lsp.enable(lsp)
 end
 
