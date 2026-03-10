@@ -18,7 +18,7 @@ return require('packer').startup(function(use)
     }
     use { 'nvim-telescope/telescope.nvim' }
 
-    -- Syntax highlighting
+    -- Syntax highlighting, incremental selection, indentation etc
     use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',

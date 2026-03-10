@@ -1,7 +1,6 @@
 local nvim_lsp = vim.lsp
 local servers = {
-    'clangd', 'ts_ls',
-    'pyright', 'rust_analyzer',
+    'clangd', 'ruff', 'rust_analyzer', 'ts_ls', 'ty',
 }
 
 -- Mappings.
@@ -74,6 +73,17 @@ nvim_lsp.config('lua_ls', {
     },
 })
 nvim_lsp.enable('lua_ls')
+
+nvim_lsp.config('tailwindcss', {
+    on_atach = on_attach,
+    flags = lsp_flags,
+    filetypes = {
+        'htmldjango', 'html', 'css', 'less', 'sass', 'scss',
+        'javascript', 'javascriptreact', 'typescript',
+        'typescriptreact', 'vue', 'svelte',
+    },
+})
+nvim_lsp.enable('tailwindcss')
 
 for _, lsp in ipairs(servers) do
     nvim_lsp.config(lsp, {
