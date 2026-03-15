@@ -2,7 +2,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 vim.opt.mouse = 'a'
-vim.opt.encoding = 'utf-8'
+vim.opt.encoding = "utf-8"
 
 vim.opt.ignorecase = true
 vim.opt.hlsearch = false
